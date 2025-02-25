@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Navigation Tabs with Hover Effects</title>
+    <style>
+        /* Main page bubbles */
+        .bubble-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 100vh;
+            background: #f5f5f5;
+        }
+
+        .bubble {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            overflow: hidden;
+        }
+
+        .bubble:hover {
+            transform: scale(1.05);
+        }
+
+        .bubble img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .bubble-text {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: white;
+            background: rgba(0,0,0,0.7);
+            padding: 10px;
+        }
+
+        /* Navigation Layout */
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #f5f5f5;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .home {
+            padding: 10px 20px;
+            background: #ffffff;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .home:hover {
+            background: #007bff;
+            color: white;
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 20px;
+        }
+
+        /* Dropdown menu */
+        .dropdown {
+            position: relative;
+            cursor: pointer;
+            padding: 15px 30px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .dropdown:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            background: #007bff;
+            color: white;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 45px;
+            left: 0;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            width: 160px;
+            z-index: 10;
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: black;
+            transition: background 0.3s;
+        }
+
+        .dropdown-content a:hover {
+            background: #007bff;
+            color: white;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        /* Navigation tabs */
+        .tab-section {
+            display: none;
+            padding: 20px;
+        }
+
+        .tab-section.active {
+            display: block;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        /* Home Logo */
+        .home-logo {
+           margin-right: 10px;
+        }
+
+        .home-logo img {
+          width: 30px;
+          height: 30px;
+          cursor: pointer;
+        }
+
+        .tab {
+            padding: 15px 30px;
+            background: #ffffff;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .tab:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            background: #007bff;
+            color: white;
+        }
+
+        .content {
+            display: none;
+            padding: 20px;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        /* Data table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        /* Return to Home Button */
+        .return-home {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .return-home:hover {
+            background: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Bubbles -->
+    <div class="bubble-container">
+        <div class="bubble" onclick="showTabSection('navigate')">
+            <img src="https://picsum.photos/250?1" alt="Navigate">
+            <div class="bubble-text">Navigate</div>
+        </div>
+        <div class="bubble" onclick="showTabSection('explore')">
+            <img src="https://picsum.photos/250?2" alt="Explore">
+            <div class="bubble-text">Explore</div>
+        </div>
+        <div class="bubble" onclick="showTabSection('discover')">
+            <img src="https://picsum.photos/250?3" alt="Discover">
+            <div class="bubble-text">Discover</div>
+        </div>
+    </div>
+
+    <!-- Navigate Tab Section -->
+    <div class="tab-section" id="navigate">
+        <div class="nav-tabs">
+            <div class="home-logo">
+              <a href="https://lsun-morpc.github.io/Storage/">
+                <img src="your-logo.png" alt="Home" class="home-icon">
+              </a>
+            </div>
+            <div class="tab active" onclick="switchTab0(0, 'navigate')">Navigate</div>
+            <div class="tab" onclick="switchTab0(1, 'navigate')">Story</div>
+            <div class="tab" onclick="switchTab0(2, 'navigate')">Love</div>
+            <div class="tab" onclick="switchTab0(3, 'navigate')">Combat</div>
+        </div>
+        <div class="content active">
+            <h3>Navigate</h3>
+            <details>
+              <summary>Navigate</summary>
+                <select id="navigateDropdown" onchange="showSelectedContent0(this.value)">
+                  <option value="0">Navigate</option>
+                  <option value="1">Story</option>
+                  <option value="2">Love</option>
+                  <option value="3">Combat</option>
+                </select>
+                <div id="additionalContent0"></div>
+            </details>
+        </div>
+        <div class="content">Forest Gump</div>
+        <div class="content">The Notebook</div>
+        <div class="content">Squid Game</div>
+        <button class="return-home" onclick="returnHome()">Return to Home</button>
+    </div>
+
+    <!-- Explore Tab Section -->
+    <div class="tab-section" id="explore">
+        <div class="nav-tabs">
+            <div class="home-logo">
+              <a href="homepage.html">
+                <img src="your-logo.png" alt="Home" class="home-icon">
+              </a>
+            </div>
+            <div class="tab active" onclick="switchTab1(0, 'explore')">Explore</div>
+            <div class="tab" onclick="switchTab1(1, 'explore')">Indians</div>
+            <div class="tab" onclick="switchTab1(2, 'explore')">Delta</div>
+            <div class="tab" onclick="switchTab1(3, 'explore')">Wax</div>
+        </div>
+        <div class="content active">
+            <h3>Explore</h3>
+            <details>
+              <summary>Explore</summary>
+                <select id="navigateDropdown" onchange="showSelectedContent1(this.value)">
+                  <option value="0">Explore</option>
+                  <option value="1">Indians</option>
+                  <option value="2">Delta</option>
+                  <option value="3">Wax</option>
+                </select>
+                <div id="additionalContent1"></div>
+            </details>
+        </div>
+        <div class="content">Oklahoma City</div>
+        <div class="content">Atlanta</div>
+        <div class="content">Rapid City</div>
+        <button class="return-home" onclick="returnHome()">Return to Home</button>
+    </div>
+
+    <!-- Discover Tab Section -->
+    <div class="tab-section" id="discover">
+        <div class="nav-tabs">
+            <div class="home-logo">
+              <a href="homepage.html">
+                <img src="your-logo.png" alt="Home" class="home-icon">
+              </a>
+            </div>
+            <div class="tab active" onclick="switchTab2(0, 'discover')">Discover</div>
+            <div class="tab" onclick="switchTab2(1, 'discover')">Colorful</div>
+            <div class="tab" onclick="switchTab2(2, 'discover')">Geoscience</div>
+            <div class="tab" onclick="switchTab2(3, 'discover')">Play</div>
+        </div>
+        <div class="content active">
+            <h3>Discover</h3>
+            <details>
+              <summary>Discover</summary>
+                <select id="navigateDropdown" onchange="showSelectedContent2(this.value)">
+                  <option value="0">Discover</option>
+                  <option value="1">Colorful</option>
+                  <option value="2">Geoscience</option>
+                  <option value="3">Play</option>
+                </select>
+                <div id="additionalContent2"></div>
+            </details>
+        </div>
+        <div class="content">Charleston</div>
+        <div class="content">Boulder</div>
+        <div class="content">Rochester</div>
+        <button class="return-home" onclick="returnHome()">Return to Home</button>
+    </div>
+
+    <script>
+        function showTabSection(sectionId) {
+            // Hide the bubble container
+            document.querySelector('.bubble-container').style.display = 'none';
+
+            // Hide all tab sections
+            document.querySelectorAll('.tab-section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show the selected tab section
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        function returnHome() {
+            // Hide all tab sections
+            document.querySelectorAll('.tab-section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show the bubble container
+            document.querySelector('.bubble-container').style.display = 'flex';
+        }
+
+        function switchTab0(tabIndex, sectionId) {
+            // Get the active tab section
+            const section = document.getElementById(sectionId);
+            const tabs = section.querySelectorAll('.tab');
+            const contents = section.querySelectorAll('.content');
+
+            // Remove active classes
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            // Activate the selected tab and its content
+            tabs[tabIndex].classList.add('active');
+            contents[tabIndex].classList.add('active');
+
+            // Clear additional content when switching tabs
+            if (sectionId === 'navigate') {
+                document.getElementById('additionalContent0').innerHTML = '';
+            }
+        }
+
+        function switchTab1(tabIndex, sectionId) {
+            // Get the active tab section
+            const section = document.getElementById(sectionId);
+            const tabs = section.querySelectorAll('.tab');
+            const contents = section.querySelectorAll('.content');
+
+            // Remove active classes
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            // Activate the selected tab and its content
+            tabs[tabIndex].classList.add('active');
+            contents[tabIndex].classList.add('active');
+
+            // Clear additional content when switching tabs
+            if (sectionId === 'navigate') {
+                document.getElementById('additionalContent1').innerHTML = '';
+            }
+        }
+        
+        function switchTab2(tabIndex, sectionId) {
+            // Get the active tab section
+            const section = document.getElementById(sectionId);
+            const tabs = section.querySelectorAll('.tab');
+            const contents = section.querySelectorAll('.content');
+
+            // Remove active classes
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            // Activate the selected tab and its content
+            tabs[tabIndex].classList.add('active');
+            contents[tabIndex].classList.add('active');
+
+            // Clear additional content when switching tabs
+            if (sectionId === 'navigate') {
+                document.getElementById('additionalContent2').innerHTML = '';
+            }
+        }
+        
+        function showSelectedContent0(value) {
+            const additionalContent0 = document.getElementById('additionalContent0');
+            let tableHTML = '';
+        
+            switch (value) {
+                case '0':
+                    tableHTML = `
+                        <h4>Navigate</h4>
+                        <table border="1">
+                            <tr>
+                                <th>C1</th>
+                                <th>C2</th>
+                            </tr>
+                            <tr>
+                                <td>C1R1</td>
+                                <td>C2R1</td>
+                            </tr>
+                            <tr>
+                                <td>C1R2</td>
+                                <td>C2R2</td>
+                            </tr>
+                        </table>
+                    `;
+                    break;
+                case '1':
+                    tableHTML = `
+                        <h4>Story</h4>
+                        <table border="1">
+                            <tr>
+                                <th>C1</th>
+                                <th>C2</th>
+                            </tr>
+                            <tr>
+                                <td>C1R1</td>
+                                <td>C2R1</td>
+                            </tr>
+                            <tr>
+                                <td>C1R2</td>
+                                <td>C2R2</td>
+                            </tr>
+                        </table>
+                    `;
+                    break;
+                case '2':
+                    tableHTML = `
+                        <h4>Love</h4>
+                        <table border="1">
+                            <tr>
+                                <th>C1</th>
+                                <th>C2</th>
+                            </tr>
+                            <tr>
+                                <td>C1R1</td>
+                                <td>C2R1</td>
+                            </tr>
+                            <tr>
+                                <td>C1R2</td>
+                                <td>C2R2</td>
+                            </tr>
+                        </table>
+                    `;
+                    break;
+                case '3':
+                    tableHTML = `
+                        <h4>Combat</h4>
+                        <table border="1">
+                            <tr>
+                                <th>C1</th>
+                                <th>C2</th>
+                            </tr>
+                            <tr>
+                                <td>C1R1</td>
+                                <td>C2R1</td>
+                            </tr>
+                            <tr>
+                                <td>C1R2</td>
+                                <td>C2R2</td>
+                            </tr>
+                        </table>
+                    `;
+                    break;
+                default:
+                    additionalContent0.innerHTML = '';
+                    return; // Exit if no valid value
+            }
+        
+            additionalContent0.innerHTML = tableHTML;
+        }
+        
+        function showSelectedContent1(value) {
+            const additionalContent0 = document.getElementById('additionalContent1');
+            let tableHTML = '';
+        
+            switch (value) {
+                case '0':
+                    tableHTML = `
+                        <h4>Explore</h4>
+                        <table border="1">
+                            <tr>
+                                <th>C1</th>
+                                <th>C2</th>
+                            </tr>
+                            <tr>
+                                <td>C1R1</td>
+                                <td>C2R1</td>
+                            </tr>
+                            <tr>
+                                <td>C1R2</td>
+                                <td>C2R2</td>
+                            </tr>
+                        </table>
+                    `;
+                    break;
+                case '1':
+                    tableHTML = `
+                        <h4>Indians</h4>
+                        <table border="1">
+                            <tr>
+                                <th>C1</th>
+                                <th>C2</th>
+                            </tr>
+                            <tr>
+                                <td>C1R1</td>
+                                <td>C2R1</td>
+                            </tr>
+                            <tr>
+                                <td>C1R2</td>
+                                <td>C2R2</td>
+                            </tr>
+                        </table>
+                    `;
+                    break;
+                case '2':
+                    tableHTML = `
+                        <h4>Delta</h4>
+                        <table border="1">
+                            <tr>
+                                <th>C1</th>
+                                <th>C2</th>
+                            </tr>
+                            <tr>
+                                <td>C1R1</td>
+                                <td>C2R1</td>
+                            </tr>
+                            <tr>
+                                <td>C1R2</td>
+                                <td>C2R2</td>
+                            </tr>
+                        </table>
+                    `;
+                    break;
+                case '3':
+                    tableHTML = `
+                        <h4>Wax</h4>
+                        <table border="1">
+                            <tr>
+                                <th>C1</th>
+                                <th>C2</th>
+                            </tr>
+                            <tr>
+                                <td>C1R1</td>
+                                <td>C2R1</td>
+                            </tr>
+                            <tr>
+                                <td>C1R2</td>
+                                <td>C2R2</td>
+                            </tr>
+                        </table>
+                    `;
+                    break;
+                default:
+                    additionalContent0.innerHTML = '';
+                    return; // Exit if no valid value
+            }
+        
+            additionalContent1.innerHTML = tableHTML;
+        }
+        
+        function showSelectedContent2(value) {
+            const additionalContent0 = document.getElementById('additionalContent2');
+            let tableHTML = '';
+        
+            switch (value) {
+                case '0':
+                    tableHTML = `
+                        <h4>Discover</h4>
+                        <table border="1">
+                            <tr>
+                                <th>C1</th>
+                                <th>C2</th>
+                            </tr>
+                            <tr>
+                                <td>C1R1</td>
+                                <td>C2R1</td>
+                            </tr>
+                            <tr>
+                                <td>C1R2</td>
+                                <td>C2R2</td>
+                            </tr>
+                        </table>
+                    `;
+                    break;
+                case '1':
+                    tableHTML = `
+                        <h4>Colorful</h4>
+                        <table border="1">
+                            <tr>
+                                <th>C1</th>
+                                <th>C2</th>
+                            </tr>
+                            <tr>
+                                <td>C1R1</td>
+                                <td>C2R1</td>
+                            </tr>
+                            <tr>
+                                <td>C1R2</td>
+                                <td>C2R2</td>
+                            </tr>
+                        </table>
+                    `;
+                    break;
+                case '2':
+                    tableHTML = `
+                        <h4>Geoscience</h4>
+                        <table border="1">
+                            <tr>
+                                <th>C1</th>
+                                <th>C2</th>
+                            </tr>
+                            <tr>
+                                <td>C1R1</td>
+                                <td>C2R1</td>
+                            </tr>
+                            <tr>
+                                <td>C1R2</td>
+                                <td>C2R2</td>
+                            </tr>
+                        </table>
+                    `;
+                    break;
+                case '3':
+                    tableHTML = `
+                        <h4>Play</h4>
+                        <table border="1">
+                            <tr>
+                                <th>C1</th>
+                                <th>C2</th>
+                            </tr>
+                            <tr>
+                                <td>C1R1</td>
+                                <td>C2R1</td>
+                            </tr>
+                            <tr>
+                                <td>C1R2</td>
+                                <td>C2R2</td>
+                            </tr>
+                        </table>
+                    `;
+                    break;
+                default:
+                    additionalContent2.innerHTML = '';
+                    return; // Exit if no valid value
+            }
+        
+            additionalContent0.innerHTML = tableHTML;
+        }
+    </script>
+</body>
+</html>
